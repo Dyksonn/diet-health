@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { CreateFeed } from '@screens/CreateFeed';
 
 import { Home } from '@screens/Home';
 import { Statistic } from '@screens/Statistic';
@@ -16,6 +17,11 @@ export function AppRoutes(){
       <Screen 
         name="statistic"
         component={Statistic}
+      />
+
+      <Screen 
+        name="createFeed"
+        component={CreateFeed}
       />
     </Navigator>
   );

@@ -9,10 +9,28 @@ import { TouchableHighlight, View, SectionList, Text } from 'react-native'
 import { HomeHeader } from '@components/HomeHeader';
 import { Percent } from '@components/Percent';
 import { Button } from '@components/Button';
+import { Diet, SectionDiet } from '@components/Diet';
 
 const data = [
     {
         daymonthyear: '10.02.2023',
+        data: [{
+            name: 'Xtudo',
+            description: 'tudoooo',
+            date: '20-04-2023',
+            hour: '10:15',
+            isDiet: false
+        },
+        {
+            name: 'Sanduiche',
+            description: 'taca',
+            date: '20-04-2023',
+            hour: '10:15',
+            isDiet: false
+        }]
+    },
+    {
+        daymonthyear: '09.02.2023',
         data: [{
             name: 'Xtudo',
             description: 'tudoooo',
@@ -28,6 +46,10 @@ export function Home() {
     
     function handleOpenStatisticDiet() {
         navigation.navigate('statistic');
+    }
+
+    function handleCreateNewFeed() {
+        navigation.navigate('createFeed');
     }
 
     return (
@@ -46,17 +68,16 @@ export function Home() {
             <Button 
                 title="Nova refeição"
                 icon={<Icon />}
+                onPress={handleCreateNewFeed}
             />
             
             <SectionList 
                 sections={data}
                 keyExtractor={(item, index) => String(item.name + index)}
                 renderItem={({ item }) => (
-                    <View>
-                        <Text>{item.name}</Text>
-                    </View>
+                    <Diet hour={item.hour} title={item.name} />
                 )}
-                renderSectionHeader={({ section: { daymonthyear }}) => <Text>{daymonthyear}</Text>}
+                renderSectionHeader={({ section: { daymonthyear }}) => <SectionDiet section={daymonthyear}/>}
             />
         </Container>
     );
