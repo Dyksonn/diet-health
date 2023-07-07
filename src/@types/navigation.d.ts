@@ -4,8 +4,16 @@ export declare global {
       home: undefined;
       statistic: undefined;
       createFeed: undefined;
-      finishCreate: undefined;
-      editFeed: undefined;
+      finishCreate: { isFailed: boolean };
+      editFeed: {
+        data: {
+          name: string;
+          description: string;
+          date: Date;
+          hour: Date;
+          isDiet: boolean;
+        }
+      };
     }
   }
 }

@@ -1,5 +1,9 @@
 import styled from 'styled-components/native';
 
+type PropsComponent = {
+    isDiet: boolean;
+}
+
 export const Container = styled.TouchableOpacity`
     flex-direction: row;
     align-items: center;
@@ -36,11 +40,11 @@ export const Title = styled.Text`
     color: ${({ theme }) => theme.COLORS.GRAY_200};
 `;
 
-export const IsDiet = styled.View`
+export const IsDiet = styled.View<PropsComponent>`
     width: 14px;
     height: 14px;
     border-radius: 7px;
-    background-color: red;
+    background-color: ${({ theme, isDiet }) => isDiet ? theme.COLORS.GREEN_500 : theme.COLORS.RED_MID};
 `;
 
 export const SectionTitle = styled.Text`

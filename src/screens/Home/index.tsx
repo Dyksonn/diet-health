@@ -17,15 +17,15 @@ const data = [
         data: [{
             name: 'Xtudo',
             description: 'tudoooo',
-            date: '20-04-2023',
-            hour: '10:15',
+            date: new Date(),
+            hour: new Date(),
             isDiet: false
         },
         {
             name: 'Sanduiche',
             description: 'taca',
-            date: '20-04-2023',
-            hour: '10:15',
+            date: new Date(),
+            hour: new Date(),
             isDiet: false
         }]
     },
@@ -34,8 +34,8 @@ const data = [
         data: [{
             name: 'Xtudo',
             description: 'tudoooo',
-            date: '20-04-2023',
-            hour: '10:15',
+            date: new Date(),
+            hour: new Date(),
             isDiet: false
         }]
     }
@@ -75,7 +75,9 @@ export function Home() {
                 sections={data}
                 keyExtractor={(item, index) => String(item.name + index)}
                 renderItem={({ item }) => (
-                    <Diet hour={item.hour} title={item.name} />
+                    <Diet data={item} 
+                        onPress={()=>navigation.navigate('editFeed', { data: item })}
+                    />
                 )}
                 renderSectionHeader={({ section: { daymonthyear }}) => <SectionDiet section={daymonthyear}/>}
             />

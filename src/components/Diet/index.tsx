@@ -7,24 +7,32 @@ import {
     IsDiet,
     SectionTitle
 } from './styles'
+import { TouchableOpacityProps } from 'react-native';
 
-type Props = {
-    hour: string;
-    title: string;
+type PropsDiet = {
+    name: string;
+    description: string;
+    date: Date;
+    hour: Date;
+    isDiet: boolean;
 }
 
-export function Diet({hour, title}:Props) {
+type Props = TouchableOpacityProps & {
+    data: PropsDiet;
+}
+
+export function Diet({data, ...rest}:Props) {
     return (
-        <Container>
+        <Container {...rest}>
             <ContainerHour>
-                <Hour>{hour}</Hour>
+                <Hour>{data.hour.toLocaleTimeString('pt-br').slice(0, 5)}</Hour>
 
                 <Divider />
             </ContainerHour>
 
-            <Title>{title}</Title>
+            <Title>{data.name}</Title>
 
-            <IsDiet />
+            <IsDiet isDiet={data.isDiet} />
         </Container>
     );
 }
