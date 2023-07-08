@@ -2,11 +2,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
 import { ArrowLeft } from 'phosphor-react-native';
 
-export const Container = styled(SafeAreaView)`
+type PropsComponent = {
+    bg?: string;
+}
+
+export const Container = styled(SafeAreaView)<PropsComponent>`
     width: 100%;
     justify-content: center;
     align-items: center;
-    background-color: ${({ theme }) => theme.COLORS.GRAY_500};
+    background-color: ${({ theme, bg }) => bg ?? theme.COLORS.GRAY_500};
     padding: 24px 24px 140px 24px;
 `;
 

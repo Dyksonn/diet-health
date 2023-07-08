@@ -26,7 +26,7 @@ const data = [
             description: 'taca',
             date: new Date(),
             hour: new Date(),
-            isDiet: false
+            isDiet: true
         }]
     },
     {

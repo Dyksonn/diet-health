@@ -14,7 +14,7 @@ export const Content = styled.View`
     border-top-right-radius: 20px;
     border-top-left-radius: 20px;
     background-color: ${({ theme }) => theme.COLORS.GRAY_700};
-    margin-top: -140px;
+    margin-top: -105px;
     padding: 40px 24px;
 `;
 

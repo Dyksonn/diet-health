@@ -20,9 +20,9 @@ export function Button({
 } : Props) {
     const Icon = icon;
     return (
-        <Container {...rest}>
+        <Container outline={outline} {...rest}>
             {icon}
-            <Title>{title}</Title>
+            <Title outline={outline}>{title}</Title>
         </Container>
     );
 }

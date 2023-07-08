@@ -7,11 +7,12 @@ import {
 
 type Props = {
     title: string;
+    bg?: string;
 }
 
-export function AppHeader({ title } : Props) {
+export function AppHeader({ title, bg } : Props) {
     return (
-        <Container>
+        <Container bg={bg}>
             <ButtonIcon>
                 <Icon />
             </ButtonIcon>
