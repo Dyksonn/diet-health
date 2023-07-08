@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import {
     Container,
     Title,
@@ -11,9 +12,15 @@ type Props = {
 }
 
 export function AppHeader({ title, bg } : Props) {
+    const navigation = useNavigation();
+
+    function handleGoBack() {
+        navigation.goBack();
+    }
+
     return (
         <Container bg={bg}>
-            <ButtonIcon>
+            <ButtonIcon onPress={handleGoBack}>
                 <Icon />
             </ButtonIcon>
             <Title>{title}</Title>
