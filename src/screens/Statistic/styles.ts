@@ -5,7 +5,12 @@ export const Container = styled.View`
   flex: 1;
 `;
 
-export const Content = styled.View`
+export const Content = styled.ScrollView.attrs({
+  contentContainerStyle: {
+    paddingBottom: 90
+  },
+  showsVerticalScrollIndicator: false
+})`
   flex: 1;
   background-color: ${({ theme }) => theme.COLORS.GRAY_700};
   border-top-right-radius: 20px;

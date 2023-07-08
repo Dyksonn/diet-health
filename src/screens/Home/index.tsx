@@ -79,6 +79,10 @@ export function Home() {
                         onPress={()=>navigation.navigate('editFeed', { data: item })}
                     />
                 )}
+                contentContainerStyle={{
+                    paddingBottom: 50
+                }}
+                showsVerticalScrollIndicator={false}
                 renderSectionHeader={({ section: { daymonthyear }}) => <SectionDiet section={daymonthyear}/>}
             />
         </Container>
