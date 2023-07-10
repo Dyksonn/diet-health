@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useState, useEffect } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { Alert } from 'react-native';
 import {
     Container,
     Content,
@@ -16,10 +17,23 @@ import { AppHeader } from '@components/AppHeader';
 import { Input } from '@components/Input';
 import { DateHour } from '@components/DateHour';
 import { Button } from '@components/Button';
+import { dietCreate } from '@storage/Diets/dietsCreate';
+import { AppError } from '@utils/AppError';
+import { dietEdit } from '@storage/Diets/dietEdit';
+
+
+type PropsRoute = {
+    data: PropsDataFeed;
+    section: string;
+}
 
 export function CreateFeed() {
+    const routeParams = useRoute().params as PropsRoute;
+    const edit = routeParams !== undefined ? true : false;
     const [visibleDate, setVisibleDate] = useState(false);
     const [visibleHour, setVisibleHour] = useState(false);
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
     const [date, setDate] = useState<Date|null>(null);
     const [hour, setHour] = useState<Date|null>(null);
     const [isDiet, setIsDiet] = useState<number>(0)
@@ -30,8 +44,8 @@ export function CreateFeed() {
         setDate(data);
         setVisibleDate(false);
     }
+
     function onConfirmHour(data: Date) {
-        console.log(data);
         setHour(data)
         setVisibleHour(false);
     }
@@ -40,11 +54,51 @@ export function CreateFeed() {
         setIsDiet(prevState => prevState === value ? 0 : value);
     }
 
-    function handleCreateFeed() {
-        navigation.navigate('finishCreate', {
-            isFailed: isDiet === 2 ? true : false
-        });
+    async function handleCreateFeed() {
+        try {
+            const data = {
+                name, 
+                description,
+                date: date,
+                hour: hour,
+                isDiet: isDiet === 1 ? true : false
+            }
+
+            if (edit) {
+                await dietEdit(data, routeParams.section);
+            } else {
+                await dietCreate(data);
+            }
+            navigation.navigate('finishCreate', {
+                isFailed: data.isDiet
+            });
+        } catch (error) {
+            if (error instanceof AppError) {
+                Alert.alert('Registrar refeição', error.message);
+            } else {
+                Alert.alert('Registrar refeição', 'Não foi possivel registrar nova refeição');
+            }
+        }
     }
+
+    useEffect(() => {
+        console.log(routeParams);
+        if (routeParams !== undefined) {
+            const { 
+                name, 
+                description, 
+                date,
+                hour,
+                isDiet
+            } = routeParams.data;
+
+            setName(name);
+            setDescription(description);
+            setDate(new Date(String(date)));
+            setHour(new Date(String(hour)));
+            setIsDiet(isDiet ? 1 : 2);
+        }
+    }, [])
 
     return (
         <Container>
@@ -52,11 +106,15 @@ export function CreateFeed() {
             <Content>
                 <Input 
                     titleInput='Nome'
+                    value={name}
+                    onChangeText={setName}
                 />
 
                 <Input 
                     titleInput='Descrição'
                     isMultiline
+                    value={description}
+                    onChangeText={setDescription}
                 />
 
                 <Row>
@@ -108,7 +166,7 @@ export function CreateFeed() {
                 </Row>
 
                 <Button 
-                    title="Cadastrar refeição"
+                    title={edit ? "Salvar alterações" : "Cadastrar refeição"}
                     onPress={handleCreateFeed}
                 />
             </Content> 

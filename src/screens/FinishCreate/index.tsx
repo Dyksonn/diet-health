@@ -26,18 +26,22 @@ export function FinishCreate() {
     }
     return (
         <Container>
-            <Title isFailed={isFailed}>
-                {!isFailed ? 'Continue Assim!' : 'Que pena!'}
+            <Title isFailed={!isFailed}>
+                {!isFailed ? 
+                    'Que pena!'
+                    : 
+                    'Continue Assim!' 
+                }
             </Title>
             {
                 !isFailed ? 
-                    <Description>Você continua <Description bold>dentro da dieta</Description>. Muito bem!</Description>
+                <Description>Você <Description bold>saiu da dieta</Description> dessa vez, mais continue se esforçando e não desista!</Description>
                 :
-                    <Description>Você <Description bold>saiu da dieta</Description> dessa vez, mais continue se esforçando e não desista!</Description>
+                <Description>Você continua <Description bold>dentro da dieta</Description>. Muito bem!</Description>
             }
 
             <ImageHero 
-                source={!isFailed ? success : err}
+                source={!isFailed ? err : success}
                 resizeMode='contain'
             />
 

@@ -1,3 +1,4 @@
+import { transformDates } from '@utils/transformDatesPt';
 import {
     Container,
     ContainerHour,
@@ -9,23 +10,15 @@ import {
 } from './styles'
 import { TouchableOpacityProps } from 'react-native';
 
-type PropsDiet = {
-    name: string;
-    description: string;
-    date: Date;
-    hour: Date;
-    isDiet: boolean;
-}
-
 type Props = TouchableOpacityProps & {
-    data: PropsDiet;
+    data: PropsDataFeed;
 }
 
 export function Diet({data, ...rest}:Props) {
     return (
         <Container {...rest}>
             <ContainerHour>
-                <Hour>{data.hour.toLocaleTimeString('pt-br').slice(0, 5)}</Hour>
+                <Hour>{transformDates(data.hour, 'time')}</Hour>
 
                 <Divider />
             </ContainerHour>

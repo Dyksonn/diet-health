@@ -11,7 +11,7 @@ type Props = DateTimePickerProps & {
     isVisible: boolean;
     title: string;
     onPress: () => void;
-    value: Date|null;
+    value: Date | null;
     isDate?: boolean;
 }
 

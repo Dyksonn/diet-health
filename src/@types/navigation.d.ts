@@ -3,16 +3,14 @@ export declare global {
     interface RootParamList {
       home: undefined;
       statistic: undefined;
-      createFeed: undefined;
+      createFeed?: {
+        data: PropsDataFeed,
+        section: string;
+      };
       finishCreate: { isFailed: boolean };
       editFeed: {
-        data: {
-          name: string;
-          description: string;
-          date: Date;
-          hour: Date;
-          isDiet: boolean;
-        }
+        data: PropsDataFeed,
+        section: string;
       };
     }
   }

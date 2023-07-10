@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useRoute } from '@react-navigation/native'
+import { useRoute, useNavigation } from '@react-navigation/native'
 import { AppHeader } from '@components/AppHeader'
 import {
     Container,
@@ -19,30 +19,31 @@ import { useTheme } from 'styled-components'
 
 import { Button } from '@components/Button'
 import { PopUp } from '@components/PopUp'
+import { dietRemove } from '@storage/Diets/dietRemove'
+import { transformDates } from '@utils/transformDatesPt'
 
 type PropsRoute = {
-    data: {
-        name: string;
-        description: string;
-        date: Date;
-        hour: Date;
-        isDiet: boolean;
-      }
+    data: PropsDataFeed;
+    section: string;
 }
 
 export function EditFeed() {
     const [visible, setVisible] = useState(false);
-    const { data } = useRoute().params as PropsRoute;
+    const { data, section } = useRoute().params as PropsRoute;
     const { COLORS } = useTheme();
+    const navigation = useNavigation();
 
-    const date = data.date.toLocaleDateString('pt-br');
-    const hour = data.hour.toLocaleTimeString('pt-br').slice(0, 5);
-
-    function handleExcluded() {
+    async function handleExcluded() {
+        await dietRemove(data, section);
         handleOpenOrCloseVisible();
+        navigation.goBack();
     }
 
     const handleOpenOrCloseVisible = () => setVisible(prevState => !prevState);
+
+    function handleNavEditFeed() {
+        navigation.navigate('createFeed', {data, section});
+    }
 
    return (
         <Container>
@@ -55,7 +56,7 @@ export function EditFeed() {
                 <Description>{data.description}</Description>
 
                 <Date>Data e hora</Date>
-                <InfoData>{date} ás {hour}</InfoData>
+                <InfoData>{transformDates(data.date, 'date')} ás {transformDates(data.hour, 'time')}</InfoData>
 
                 <ContainerIsDiet>
                     <ContainerBall isDiet={data.isDiet} />
@@ -66,6 +67,7 @@ export function EditFeed() {
                     <Button 
                         title="Editar refeição"
                         icon={<IconPincel />}
+                        onPress={handleNavEditFeed}
                     />
                     <Button 
                         title="Excluir refeição"

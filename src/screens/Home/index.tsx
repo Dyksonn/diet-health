@@ -1,4 +1,5 @@
-import { useNavigation } from '@react-navigation/native';
+import { useState, useCallback } from 'react';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import {
     Container,
     Title,
@@ -10,39 +11,24 @@ import { HomeHeader } from '@components/HomeHeader';
 import { Percent } from '@components/Percent';
 import { Button } from '@components/Button';
 import { Diet, SectionDiet } from '@components/Diet';
-
-const data = [
-    {
-        daymonthyear: '10.02.2023',
-        data: [{
-            name: 'Xtudo',
-            description: 'tudoooo',
-            date: new Date(),
-            hour: new Date(),
-            isDiet: false
-        },
-        {
-            name: 'Sanduiche',
-            description: 'taca',
-            date: new Date(),
-            hour: new Date(),
-            isDiet: true
-        }]
-    },
-    {
-        daymonthyear: '09.02.2023',
-        data: [{
-            name: 'Xtudo',
-            description: 'tudoooo',
-            date: new Date(),
-            hour: new Date(),
-            isDiet: false
-        }]
-    }
-]
+import { dietsGetAll } from '@storage/Diets/dietsGetAll';
 
 export function Home() {
+    const [isLoading, setIsLoading] = useState(false);
+    const [diets, setDiets] = useState<FeedsDiets[]>([]);
     const navigation = useNavigation();
+
+    async function fetchFeeds() {
+        try {
+            setIsLoading(true);
+            const data = await dietsGetAll();
+            setDiets(data);
+        } catch (error) {
+            setIsLoading(false)
+        } finally {
+            setIsLoading(false);
+        }
+    }
     
     function handleOpenStatisticDiet() {
         navigation.navigate('statistic');
@@ -51,6 +37,10 @@ export function Home() {
     function handleCreateNewFeed() {
         navigation.navigate('createFeed');
     }
+
+    useFocusEffect(useCallback(() => {
+        fetchFeeds();
+    }, []));
 
     return (
         <Container>
@@ -72,11 +62,11 @@ export function Home() {
             />
             
             <SectionList 
-                sections={data}
+                sections={diets}
                 keyExtractor={(item, index) => String(item.name + index)}
-                renderItem={({ item }) => (
-                    <Diet data={item} 
-                        onPress={()=>navigation.navigate('editFeed', { data: item })}
+                renderItem={({ item, section: {daymonthyear} }) => (
+                    <Diet data={item}
+                        onPress={()=>navigation.navigate('editFeed', { data: item, section: daymonthyear })}
                     />
                 )}
                 contentContainerStyle={{
