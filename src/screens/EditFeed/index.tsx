@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useRoute } from '@react-navigation/native'
 import { AppHeader } from '@components/AppHeader'
 import {
@@ -17,6 +18,7 @@ import {
 import { useTheme } from 'styled-components'
 
 import { Button } from '@components/Button'
+import { PopUp } from '@components/PopUp'
 
 type PropsRoute = {
     data: {
@@ -29,11 +31,18 @@ type PropsRoute = {
 }
 
 export function EditFeed() {
+    const [visible, setVisible] = useState(false);
     const { data } = useRoute().params as PropsRoute;
     const { COLORS } = useTheme();
 
     const date = data.date.toLocaleDateString('pt-br');
     const hour = data.hour.toLocaleTimeString('pt-br').slice(0, 5);
+
+    function handleExcluded() {
+        handleOpenOrCloseVisible();
+    }
+
+    const handleOpenOrCloseVisible = () => setVisible(prevState => !prevState);
 
    return (
         <Container>
@@ -62,8 +71,15 @@ export function EditFeed() {
                         title="Excluir refeição"
                         icon={<IconTrash />}
                         outline
+                        onPress={handleOpenOrCloseVisible}
                     />
                 </Footer>
+
+                <PopUp 
+                    visible={visible}
+                    onClose={handleOpenOrCloseVisible}
+                    onExcluded={handleExcluded}
+                />
             </Content>
         </Container>
    );

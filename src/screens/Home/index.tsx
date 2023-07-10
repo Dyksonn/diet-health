@@ -4,7 +4,7 @@ import {
     Title,
     Icon,
 } from './styles';
-import { TouchableHighlight, View, SectionList, Text } from 'react-native'
+import { TouchableHighlight, SectionList } from 'react-native'
 
 import { HomeHeader } from '@components/HomeHeader';
 import { Percent } from '@components/Percent';
