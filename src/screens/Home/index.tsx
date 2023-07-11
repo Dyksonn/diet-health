@@ -49,9 +49,7 @@ export function Home() {
                 underlayColor='transparent'
                 onPress={handleOpenStatisticDiet}
             >
-                <Percent 
-                    dietHealthy 
-                />
+                <Percent />
             </TouchableHighlight>
 
             <Title>Refeições</Title>

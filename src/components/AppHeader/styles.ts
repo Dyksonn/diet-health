@@ -11,7 +11,7 @@ export const Container = styled(SafeAreaView)<PropsComponent>`
     justify-content: center;
     align-items: center;
     background-color: ${({ theme, bg }) => bg ?? theme.COLORS.GRAY_500};
-    padding: 24px 24px 140px 24px;
+    padding: 24px 24px 90px 24px;
 `;
 
 export const Title = styled.Text`
@@ -23,7 +23,7 @@ export const Title = styled.Text`
 
 export const ButtonIcon = styled.TouchableOpacity`
     position: absolute;
-    top: 49px;
+    top: 69px;
     left: 24px;
 `;
 

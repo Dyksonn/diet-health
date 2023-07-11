@@ -1,3 +1,5 @@
+import { useState, useCallback } from 'react';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import {
     Container,
     PercentText,
@@ -6,29 +8,50 @@ import {
     Icon,
     IconHeader
 } from './styles'
+import { dietsStatistics } from '@storage/Diets/dietStatistics';
 
 type Props = {
-    dietHealthy: boolean;
     isHeader?: boolean;
     goBack?: () => void;
 }
 
-export function Percent({ dietHealthy, isHeader = false, goBack } : Props) {
+export function Percent({ isHeader = false, goBack } : Props) {
+    const [percentage, setPercentage] = useState('');
+    const [isDiet, setIsDiet] = useState(false);
+
+    useFocusEffect(useCallback(() => {
+        getStatistics();
+    }, []))
+
+    async function getStatistics() {
+        try {
+            const { 
+                percentageOfMealsInDiet,
+                isDietPositive
+             } = await dietsStatistics();
+
+             setIsDiet(isDietPositive);
+             setPercentage(percentageOfMealsInDiet);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
-        <Container dietHealthy={dietHealthy} isHeader={isHeader}>
+        <Container dietHealthy={isDiet} isHeader={isHeader}>
             <IconTouch 
-                dietHealthy={dietHealthy} 
+                dietHealthy={isDiet} 
                 isHeader={isHeader}
                 onPress={goBack}
             >
                 {
                     isHeader ? 
-                        <IconHeader dietHealthy={dietHealthy} isHeader={isHeader} /> :
-                        <Icon dietHealthy={dietHealthy} isHeader={isHeader} />
+                        <IconHeader dietHealthy={isDiet} isHeader={isHeader} /> :
+                        <Icon dietHealthy={isDiet} isHeader={isHeader} />
                 }
             </IconTouch>
             
-            <PercentText>90,0%</PercentText>
+            <PercentText>{percentage}%</PercentText>
             <Description>das refeições dentro da dieta</Description>
         </Container>
     );

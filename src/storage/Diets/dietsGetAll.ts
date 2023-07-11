@@ -8,7 +8,13 @@ export async function dietsGetAll() {
 
     const diets: FeedsDiets[] = storage ? JSON.parse(storage) : [];
 
-    return diets;
+    const dietsSortActualy = diets.sort((a, b) => {
+      const dateA = new Date(a.daymonthyear.split('.').reverse().join('-'));
+      const dateB = new Date(b.daymonthyear.split('.').reverse().join('-'));
+      return dateB.getTime() - dateA.getTime();
+    });
+
+    return dietsSortActualy; 
   } catch (error) {
     throw error;
   }
